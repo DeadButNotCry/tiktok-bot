@@ -9,7 +9,8 @@ import (
 )
 
 func init() {
-	os.Mkdir("..\\videos", os.ModePerm)
+	os.Mkdir("./videos/", os.ModePerm)
+	os.Mkdir("./result/", os.ModePerm)
 }
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	botApi.Debug = true
+	botApi.Debug = false
 	bot := telegram.NewBot(botApi)
 	if err := bot.Start(); err != nil {
 		log.Fatal(err)
