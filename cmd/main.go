@@ -15,7 +15,6 @@ func init() {
 
 func main() {
 	token := os.Getenv("BOT_TOKEN")
-	token = "5945815849:AAEz1DnAUCW4G2DGKacwdHvy602T-7l8cZ4"
 	if token == "" {
 		panic("empty token")
 	}

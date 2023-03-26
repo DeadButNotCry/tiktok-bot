@@ -29,7 +29,7 @@ func (b *Bot) handleVideo(update *tgbotapi.Update) {
 	fileConfig := tgbotapi.FileConfig{FileID: videoId}
 	file, err := b.bot.GetFile(fileConfig)
 	if err != nil {
-		msg := tgbotapi.NewMessage(chatId, "File is too big,use mega.nz link.")
+		msg := tgbotapi.NewMessage(chatId, "File is too big.")
 		b.bot.Send(msg)
 	}
 
@@ -37,23 +37,23 @@ func (b *Bot) handleVideo(update *tgbotapi.Update) {
 	path := filepath.Join("./videos/", localFileName)
 	out, err := os.Create(path)
 	defer out.Close()
-	check(err)
+	//check(err)
 	link := file.Link(b.bot.Token)
 	log.Println(link)
 
 	resp, err := http.Get(link)
-	check(err)
+	//check(err)
 	defer resp.Body.Close()
 
 	_, err = io.Copy(out, resp.Body)
-	check(err)
+	//check(err)
 	err = uniqueizer.DoUnique(path, "./result/"+localFileName)
 	check(err)
 
 	bf, err := os.ReadFile("./result/" + localFileName)
-	check(err)
+	//check(err)
 	videoFile := tgbotapi.FileBytes{Name: localFileName, Bytes: bf}
 	video := tgbotapi.NewVideoUpload(chatId, videoFile)
 	_, err = b.bot.Send(video)
-	check(err)
+	//check(err)
 }

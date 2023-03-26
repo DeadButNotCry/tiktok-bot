@@ -1,7 +1,9 @@
 package telegram
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"log"
 )
 
 type Bot struct {
@@ -27,17 +29,19 @@ func (b *Bot) Start() error {
 		userId := update.Message.Chat.ID
 		userIn, err := b.bot.GetChatMember(tgbotapi.ChatConfigWithUser{
 			UserID: int(userId),
-			ChatID: -720983563,
+			ChatID: -1001923600726,
 		})
 
-		if update.Message.Chat.IsGroup() {
+		if update.Message.Chat.ID == -1001923600726 {
+			log.Println("Chat message")
 			continue
 		}
 
 		if userIn.Status != "left" && err == nil && update.Message.Video != nil {
 			go b.handleVideo(&update)
 		} else {
-			msg := tgbotapi.NewMessage(userId, ".")
+			log.Println(fmt.Sprintf("From user %s"))
+			msg := tgbotapi.NewMessage(userId, "Mistake")
 			b.bot.Send(msg)
 		}
 	}
