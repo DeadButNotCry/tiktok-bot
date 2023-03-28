@@ -1,6 +1,7 @@
 package telegram
 
 import (
+	"github.com/deadbutnotcry/tiktok-bot/internal/filetransfer"
 	"io"
 	"log"
 	"net/http"
@@ -58,4 +59,32 @@ func (b *Bot) handleVideo(update *tgbotapi.Update) {
 	_, err = b.bot.Send(video)
 	check(err)
 
+}
+
+func (b *Bot) handleLink(update *tgbotapi.Update) {
+	chatId := update.Message.Chat.ID
+	link := update.Message.Text
+	errMsg := tgbotapi.NewMessage(chatId, "Try again or write to coder @deadbutnotcry")
+	if link == "" || !strings.HasSuffix(link, "#link") || !strings.HasPrefix(link, "https://filetransfer.io/data-package/") {
+		b.bot.Send(errMsg)
+		return
+	}
+	localFileName := filetransfer.FileTransferIoDownload(link)
+	uniqueizer.DoUnique("./videos/"+localFileName, "./result/"+localFileName)
+	//bf, err := os.ReadFile("./result/" + localFileName)
+	//check(err)
+	//videoFile := tgbotapi.FileBytes{Name: localFileName, Bytes: bf}
+	//video := tgbotapi.NewVideoUpload(chatId, videoFile)
+	//_, err = b.bot.Send(video)
+	//check(err)
+	link = filetransfer.UploadToAnonfiles("./result/" + localFileName)
+	msg := tgbotapi.NewMessage(chatId, link)
+	_, err := b.bot.Send(msg)
+	check(err)
+}
+
+func (b *Bot) handleCommand(update *tgbotapi.Update) {
+	chatId := update.Message.Chat.ID
+	msg := tgbotapi.NewMessage(chatId, "По развитию,вопросам и идеям писать @deadbutnotcry")
+	b.bot.Send(msg)
 }

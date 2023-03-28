@@ -17,7 +17,7 @@ func check(err error) {
 	}
 }
 
-func UploadToAnonfiles(path string) {
+func UploadToAnonfiles(path string) string {
 	form := new(bytes.Buffer)
 	writer := multipart.NewWriter(form)
 	fw, err := writer.CreateFormFile("file", filepath.Base(path))
@@ -48,5 +48,8 @@ func UploadToAnonfiles(path string) {
 		var respStruct AnonFilesResponse
 		json.Unmarshal(bodyText, &respStruct)
 		log.Println(respStruct.Data.File.URL.Full)
+		return respStruct.Data.File.URL.Full
+	} else {
+		return "error"
 	}
 }

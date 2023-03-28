@@ -41,6 +41,10 @@ func (b *Bot) Start() error {
 		if userIn.Status != "left" && err == nil && update.Message.Video != nil {
 			go b.handleVideo(&update)
 
+		} else if userIn.Status != "left" && err == nil {
+			go b.handleLink(&update)
+		} else if update.Message.IsCommand() {
+			go b.handleCommand(&update)
 		} else {
 			log.Printf("From user %d with no video", userId)
 			msg := tgbotapi.NewMessage(userId, "Mistake")

@@ -7,7 +7,7 @@ import (
 )
 
 func DoUnique(pathIn, pathOut string) error {
-	command := "ffmpeg -i " + pathIn + " -map_metadata -1 -vf noise=alls=1:allf=t " + pathOut
+	command := "ffmpeg -y -i " + pathIn + " -map_metadata -1 -vf noise=alls=1:allf=t " + pathOut
 	parts := strings.Fields(command)
 
 	//for _, part := range parts {

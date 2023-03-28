@@ -3,5 +3,5 @@
 
 export BOT_TOKEN=
 
-go build ./cmd/main.go
-./main
+go build -o ./build/main  ./cmd/main.go
+./build/main
