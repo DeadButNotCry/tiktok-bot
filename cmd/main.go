@@ -1,11 +1,12 @@
 package main
 
 import (
-	"log"
-	"os"
-
+	"fmt"
 	"github.com/deadbutnotcry/tiktok-bot/internal/telegram"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"log"
+	"os"
+	"runtime"
 )
 
 func init() {
@@ -15,6 +16,10 @@ func init() {
 
 func main() {
 	token := os.Getenv("BOT_TOKEN")
+	if runtime.GOOS == "windows" {
+		log.Print("Pls input bot token")
+		fmt.Scanln(&token)
+	}
 	if token == "" {
 		panic("empty token")
 	}
