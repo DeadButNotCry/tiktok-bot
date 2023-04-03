@@ -30,7 +30,7 @@ func (b *Bot) Start() error {
 	for update := range updates {
 		userId := update.Message.Chat.ID
 
-		if update.Message.Chat.ID == int64(b.groupId) {
+		if update.Message.Chat.ID < 0 {
 			log.Println("Chat message")
 			continue
 		}
