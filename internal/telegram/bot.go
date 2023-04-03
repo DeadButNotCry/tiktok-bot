@@ -7,12 +7,14 @@ import (
 )
 
 type Bot struct {
-	bot *tgbotapi.BotAPI
+	bot     *tgbotapi.BotAPI
+	groupId int64
 }
 
-func NewBot(bot *tgbotapi.BotAPI) *Bot {
+func NewBot(bot *tgbotapi.BotAPI, groupId int64) *Bot {
 	return &Bot{
-		bot: bot,
+		bot:     bot,
+		groupId: groupId,
 	}
 }
 
@@ -28,14 +30,14 @@ func (b *Bot) Start() error {
 	for update := range updates {
 		userId := update.Message.Chat.ID
 
-		if update.Message.Chat.ID == -1001923600726 {
+		if update.Message.Chat.ID == int64(b.groupId) {
 			log.Println("Chat message")
 			continue
 		}
 
 		userIn, err := b.bot.GetChatMember(tgbotapi.ChatConfigWithUser{
 			UserID: int(userId),
-			ChatID: -1001923600726,
+			ChatID: int64(b.groupId),
 		})
 
 		if userIn.Status != "left" && err == nil && update.Message.Video != nil {

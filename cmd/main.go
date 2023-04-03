@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"github.com/deadbutnotcry/tiktok-bot/internal/telegram"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"os"
-	"runtime"
+	"strconv"
+
+	"github.com/deadbutnotcry/tiktok-bot/internal/telegram"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func init() {
@@ -16,19 +16,16 @@ func init() {
 
 func main() {
 	token := os.Getenv("BOT_TOKEN")
-	if runtime.GOOS == "windows" {
-		log.Print("Pls input bot token")
-		fmt.Scanln(&token)
-	}
-	if token == "" {
-		panic("empty token")
+	groupId, err := strconv.ParseInt(os.Getenv("GROUP_ID"), 10, 64)
+	if token == "" || err != nil {
+		panic(err)
 	}
 	botApi, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
 		log.Fatal(err)
 	}
 	botApi.Debug = false
-	bot := telegram.NewBot(botApi)
+	bot := telegram.NewBot(botApi, groupId)
 	if err := bot.Start(); err != nil {
 		log.Fatal(err)
 	}
