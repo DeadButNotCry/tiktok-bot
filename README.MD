@@ -1,6 +1,6 @@
 # 👾 TikTok Bot 👾
 
-Bot for video uniqueization (the main focus - tick tock videos, but you can generally any)
+Bot for video uniqueization (the main focus - tiktok videos, but you can generally any)
 
 
 ## Dependencies
